@@ -1,0 +1,17 @@
+=> loading catano 1 elapsed time: 0.683 s
+
+=> loading catano 2 elapsed time: 18.782 s
+
+=> loading catano 3 elapsed time: 23.051 s
+
+=> loading catano 4 elapsed time: 39.599 s
+
+=> loading catano 5 elapsed time: 22.017 s
+
+=> loading catano 6 elapsed time: 23.987 s
+
+=> loading catano 7 elapsed time: 46.187 s
+
+=> loading catano 8 elapsed time: 21.718 s
+
+finished loading 8 270M catalogs into MonetDB, elapsed time: 369.147 s.

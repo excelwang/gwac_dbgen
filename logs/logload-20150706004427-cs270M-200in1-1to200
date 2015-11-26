@@ -1,0 +1,7 @@
+=> loading catano 1 elapsed time: 0.425 s
+
+Total loading elapsed time: 0.425 s
+
+=> INSERT INTO target2 ...FROM targetss2 time: 22.477
+
+finished loading 1 270M catalogs into MonetDB, elapsed time: 22.903 s.

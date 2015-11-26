@@ -1,0 +1,29 @@
+=> loading catano 25 elapsed time: 22.763 s
+
+=> loading catano 26 elapsed time: 24.647 s
+
+=> loading catano 27 elapsed time: 47.445 s
+
+=> loading catano 28 elapsed time: 22.885 s
+
+=> loading catano 29 elapsed time: 22.339 s
+
+=> loading catano 30 elapsed time: 44.974 s
+
+=> loading catano 31 elapsed time: 21.537 s
+
+=> loading catano 32 elapsed time: 22.795 s
+
+=> loading catano 33 elapsed time: 45.334 s
+
+=> loading catano 34 elapsed time: 21.771 s
+
+=> loading catano 35 elapsed time: 22.945 s
+
+=> loading catano 36 elapsed time: 42.560 s
+
+Total loading elapsed time: 361.999 s
+
+=> INSERT INTO target2 ...FROM targetss2 time: 389.751
+
+finished loading 12 270M catalogs into MonetDB, elapsed time: 751.751 s.
