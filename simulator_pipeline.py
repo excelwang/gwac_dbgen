@@ -21,7 +21,8 @@ def todaystr():
     return year+mon+day+hour+min+sec  
 
 #ratiosize = {96:'130M', 192:'260M', 384:'520M', 768:'1G', 1536:'2G', 300:'400M'}
-ratiosize = {200:'270M'}
+#ratiosize = {200:'270M'}
+ratiosize = {1:'1.35M'}
 
 def call_combine(today,ratio,startno,endno, cbddir, srcdir, prefix,suffix):
     log1file=os.path.join(sys.path[0], 'logcomb-%s-%din1' %(today, ratio))
@@ -92,19 +93,23 @@ def call_load(today, ratio, tblno, startno, endno, binarydir, prefix, suffix, db
     
     #load binary files into MonetDB.
     log3 = os.path.join(sys.path[0], 'logload-%s-cs%s-%din1-%dto%d' %(today, ratiosize[ratio], ratio, startno, endno))
-    #using one core to load one table.
-    num = int(np.ceil(float(endno-startno+1)/ratio))
-    #combinedstartno is the start combined-catalog number we need to find in binarycatalogs-xin1 folder, should only be interger multiple of ratio +1.
-    combinedstartno = int(startno/ratio) + 1
+    if ratio != 1:
+        #using one core to load one table.
+        num = int(np.ceil(float(endno-startno+1)/ratio))
+        #combinedstartno is the start combined-catalog number we need to find in binarycatalogs-xin1 folder, should only be interger multiple of ratio +1.
+        combinedstartno = int(startno/ratio) + 1
+    else:
+        num = int(np.ceil(float(endno-startno+1)))
+        combinedstartno = int(startno)
     with Timer() as t3:
         load(log3, tblno, startno=combinedstartno, num=num, prefix=prefix,suffix=suffix,bindir=binarydir, dbname=dbname)
     etime = t3.secs
     with open(log3, 'a') as logfile:
         logfile.write("finished loading %d %s catalogs into MonetDB, elapsed time: %.3f s." %(num, ratiosize[ratio], etime))
 
-def pipeline(ifsimcat, ifcomb, ifconv, ifload, startno, endno, ratio, tblno, cbddir, srcdir, binarydir, prefix="RA240_DEC10_sqd300-",suffix=".cat", dbname='gwacdb'):
+def pipeline(ifsimcat, ifcomb, ifconv, ifload, startno, endno, ratio, tblno, cbddir, srcdir, binarydir, prefix="RA240_DEC10_sqd225-",suffix=".cat", dbname='gwacdb'):
     #first check if startno is valid. startno should only be interger multiple of ratio +1.
-    if startno % ratio != 1:
+    if startno!= 1 and startno % ratio != 1:
         sys.exit("error: startno should only be interger multiple of ratio +1, invalid startno: %d" %startno)
     
     today = todaystr()
@@ -133,24 +138,28 @@ machine_tableno = {
     'stones11.scilens.private' :   10,
     'stones12.scilens.private' :   11,
     'stones13.scilens.private' :   12,
-    'gwacdb'                   :   13
+    'stones14.scilens.private' :   13,
+    'stones15.scilens.private' :   14,
+    'stones16.scilens.private' :   15,
+    'gwacdb'                   :   16
 }
 
 stargenparams = {
     'n1cata'       :  1,
-    'n2cata'       :  2400,  #12000,
+    'n2cata'       :  24,  #12000,
     'ccdno'        :  machine_tableno[socket.gethostname()],
-    'destdir'      :  "/scratch/meng/gwac/catalog.csv/",
-    'templatefile' :  '/scratch/meng/gwac/RA067_DEC10_sqd180_60.2_73.8_3.4_16.6_173156.cat',
-    'rac'          :  67,
+    'destdir'      :  "/data/gwac/catalog.csv/",
+    #'templatefile' :  '/data/gwac/RA240_DEC10_sqd180_233.2_246.8_3.4_16.6_175637.cat',
+    'templatefile' :  '/data/gwac/RA240_DEC10_sqd225.cat',
+    'rac'          :  240,
     'decc'         :  10,
-    'sqd'          :  180,
+    'sqd'          :  225,
     'pixscal'      :  11.7,
     'sizes'        :  [4096,4096],
     'zoneheight'   :  10. #arcsec
 }
 
-cmbrate = 200 #2400/200=12 and 34M*200=6.6G ,*15proc=100G, plus copy-on-write = 200G, can fit in total mem 256G.
+cmbrate = 1 #2400/200=12 and 34M*200=6.6G ,*15proc=100G, plus copy-on-write = 200G, can fit in total mem 256G.
 #pipeline(ifsimcat=True, ifcomb=True, ifconv=True, ifload=False, startno=int(stargenparams['n1cata']), endno=int(stargenparams['n2cata']), ratio=cmbrate, tblno=machine_tableno[socket.gethostname()], cbddir="/scratch/meng/gwac/combinedcsv-%din1-%s/" %(cmbrate, ratiosize[cmbrate]), srcdir=stargenparams['destdir'], binarydir="/scratch/meng/gwac/binarycatalogs-%din1/" %cmbrate, prefix="RA%03d_DEC%d_sqd%d-ccd%s-" %(stargenparams['rac'], stargenparams['decc'], stargenparams['sqd'],stargenparams['ccdno']), suffix=".cat", dbname='gwacdb')
 #usage:
 #nohup python pipeline.py &

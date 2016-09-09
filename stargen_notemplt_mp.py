@@ -12,7 +12,7 @@
 #------------------------------------
 
 import os, sys, shutil
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import scipy as S
 import numpy as np
 import pywcs
@@ -99,11 +99,24 @@ def getcats(rac,decc,decw,sqd=180,outfile=None):
     #ra,dec,imag,sigi,mag1,magB,magV,gmag,rmag
     #only use ra,dec,mag1
     radecmag=S.array(dd).take([0,1,4], axis=1) # only take column number of 0,1,4
+
+    #wcs need to change according to ra,dec, used to (ra, dec)-->(x, y)
+    wcs= genwcs(rac, decc, pixscal, sizes)
+   
+    #use wcs to translate RA,DEC to x,y, according to new rac,decc.
+    ra=radecmag[0]
+    dec=radecmag[1]
+    x,y = wcs.wcs_sky2pix(ra, dec, 0)  #(RA,DEC)-->(x,y)
+
+    #add the x,y field as the 3th,4th column.
+    dd=np.concatenate(radecmag, x, axis=1)
+    dd=np.concatenate(dd, y, axis=1)
+    
     if outfile:
         S.savetxt(outfile,radecmag)
     else:
         outfile="RA%s_DEC%s_sqd%s.txt" %(rac,decc,sqd)
-        S.savetxt(outfile,radecmag)
+        S.savetxt(outfile, dd)
     return radecmag
 
 
@@ -389,13 +402,13 @@ def star_generator(**workparams):
 '''
 workparams = {
     'n1cata'       :  1,
-    'n2cata'       :  12000,
+    'n2cata'       :  2400,
     'ccdno'        :  machine_tableno[],
     'destdir'      :  "/scratch/meng/gwac/catalog.csv",
-    'templatefile' :  '/scratch/meng/gwac/RA240_DEC10_sqd300.cat',
+    'templatefile' :  '/scratch/meng/gwac/RA240_DEC10_sqd225.cat',
     'rac'          :  240,
     'decc'         :  10,
-    'sqd'          :  300,
+    'sqd'          :  225,
     'pixscal'      :  11.7,
     'sizes'        :  [4096,4096],
     'zoneheight'   :  10. #arcsec
