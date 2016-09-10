@@ -23,6 +23,17 @@ void initDoubleArray(DoubleArray *a, size_t initialSize);
 void insertDoubleArray(DoubleArray *a, double element);
 void freeDoubleArray(DoubleArray *a);
 
+typedef struct {
+  short *array;
+  size_t used;
+  size_t size;
+} ShortArray;
+
+void initShortArray(ShortArray *a, size_t initialSize);
+void insertShortArray(ShortArray *a, short element);
+void freeShortArray(ShortArray *a);
+
+
 /*one row from file line is a struct unit, hard code the number of fields to 22. if add or delete, need modify*/
 /*no alignment: sizeof(structure) == sizeof(first_member) + ... + sizeof(last_member).*/
 typedef struct __attribute__((packed))
@@ -31,7 +42,7 @@ typedef struct __attribute__((packed))
   char f1_lens[4]; //the bytes in the first field, actually unsigned int.
   char f1[4];   //data content of the first field, actually int.
   char f2_lens[4]; //the bytes in the second field, actually unsigned int.
-  char f2[8];   //data content of the second field, actually double.
+  char f2[2];   //data content of the second field, actually short.
   char f3_lens[4];
   char f3[8];
   char f4_lens[4];

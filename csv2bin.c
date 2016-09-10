@@ -34,9 +34,11 @@ int main(int argc, char* argv[])
     FILE* file;
     char line[256];
     IntArray a1,a22;
-    DoubleArray a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21;
+    ShortArray a2;
+    DoubleArray a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21;
     int v1,v22;
-    double v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16,v17,v18,v19,v20,v21;
+    short v2;
+    double v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16,v17,v18,v19,v20,v21;
     int i;
     FILE *fp;
     char fname[128];
@@ -51,7 +53,7 @@ int main(int argc, char* argv[])
     /*initially 100000 numbers.*/
     initIntArray(&a1, ARRAY_INITIAL_SIZE);
     initIntArray(&a22, ARRAY_INITIAL_SIZE);
-    initDoubleArray(&a2, ARRAY_INITIAL_SIZE);
+    initShortArray(&a2, ARRAY_INITIAL_SIZE);
     initDoubleArray(&a3, ARRAY_INITIAL_SIZE);
     initDoubleArray(&a4, ARRAY_INITIAL_SIZE);
     initDoubleArray(&a5, ARRAY_INITIAL_SIZE);
@@ -76,9 +78,9 @@ int main(int argc, char* argv[])
     while (fgets(line, sizeof(line), file)) {
         /* note that fgets don't strip the terminating \n, checking its
  *            presence would allow to handle lines longer that sizeof(line) */
-        sscanf(line,"%d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %d",&v1,&v2,&v3,&v4,&v5,&v6,&v7,&v8,&v9,&v10,&v11,&v12,&v13,&v14,&v15,&v16,&v17,&v18,&v19,&v20,&v21,&v22);
+        sscanf(line,"%d %hi %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %d",&v1,&v2,&v3,&v4,&v5,&v6,&v7,&v8,&v9,&v10,&v11,&v12,&v13,&v14,&v15,&v16,&v17,&v18,&v19,&v20,&v21,&v22);
         insertIntArray(&a1,v1);
-        insertDoubleArray(&a2,v2);
+        insertShortArray(&a2,v2);
         insertDoubleArray(&a3,v3);
         insertDoubleArray(&a4,v4);
         insertDoubleArray(&a5,v5);
@@ -112,7 +114,7 @@ int main(int argc, char* argv[])
     fwrite(a1.array, sizeof(int), a1.used, fp);
     break;
     case 2:
-    fwrite(a2.array, sizeof(double),a2.used, fp);
+    fwrite(a2.array, sizeof(short),a2.used, fp);
     break;
     case 3:
     fwrite(a3.array, sizeof(double),a3.used, fp);
@@ -184,7 +186,7 @@ int main(int argc, char* argv[])
     
 freeIntArray(&a1);
 freeIntArray(&a22);
-freeDoubleArray(&a2);
+freeShortArray(&a2);
 freeDoubleArray(&a3);
 freeDoubleArray(&a4);
 freeDoubleArray(&a5);
