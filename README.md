@@ -2,20 +2,28 @@
 Tools to generate GWAC simulation data, combine, convert to binary, load into MonetDB.
 
 Configuration
-create directory: gwac, gwac/gwac_pipeline
-clone a copy of gwac data generation code 
+1. create directory: gwac, gwac/gwac_pipeline
+2. clone a copy of gwac data generation code 
    git clone https://github.com/wan-meng/gwac_dbgen.git
-pipeline.py
+3. copy the RA240_DEC10_sqd225.cat to the upper level directory of gwac_dbgen;   
+4. pipeline.py
    add the absolute path of above dirctories to your python path: eg, 
       sys.path.append('/data/gwac/gwac_dbgen')
-   sys.path.append('/data/gwac/gwac_pipeline')
-   
+      sys.path.append('/data/gwac/gwac_pipeline')
+   change all the "cbddir, binarydir" of the pipeline().   
+5. simulator_pipeline.py
+   change the prefixes of "destdir, templatefile" of dictionary "stargenparams" according to your current machine.
+   change dictionary "machine_tableno", append the hostname of your current machine to end.
+
+Start generating simulated catalogs.
 1. Generate simulated catalogs for one night (2400 catalogs/day).
+   UnComment the first pipeline(), at the same time still keep the next four pipeline() being commented.
    you can change this number in the for loop of pipeline.py
    pipeline.py will call functions from simulator_pipeline.py to do the real genaration work.
    it will create the directory containing simulated catalogs under the top gwac directory: catalog.csv.
 
 2. Combine multiple catalog file into large ones to speed up database loading process.
+   Uncomment the second
    configure the combination rate parameter: cmbrate.
    pipeline.py will call functions from combineCata.py.py to do the real genaration work.
    the combined large files are also created in a cbddir directory under the top level: like combinedcsv-200in1-270M.
