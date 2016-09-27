@@ -23,7 +23,7 @@ Start generating simulated catalogs.
    it will create the directory containing simulated catalogs under the top gwac directory: catalog.csv.
 
 2. Combine multiple catalog file into large ones to speed up database loading process.
-   Uncomment the second
+   Uncomment the second pipeline(), comment the first pipeline().
    configure the combination rate parameter: cmbrate.
    pipeline.py will call functions from combineCata.py.py to do the real genaration work.
    the combined large files are also created in a cbddir directory under the top level: like combinedcsv-200in1-270M.
@@ -34,6 +34,7 @@ Start generating simulated catalogs.
       gcc array.c -c
       gcc csv2bin.c -c
       gcc array.o csv2bin.o -o csv2bin
+   uncommonet the third pipeline(), comment back the second pipeline().   
    pipeline.py will call functions from multicsv2bin.py to do the real conversion work.
    the binary files are created in a binarydir directory under the top level: like binarycatalogs-200in1, files like RA240_DEC10_sqd225-ccd16-0001.cat-1,..., RA240_DEC10_sqd225-ccd16-0001.cat-22.
 
