@@ -2,7 +2,9 @@
 Tools to generate GWAC simulation data, combine, convert to binary, load into MonetDB.
 
 Configuration
-create directory: gwac, gwac/gwac_dbgen, gwac/gwac_pipeline
+create directory: gwac, gwac/gwac_pipeline
+clone a copy of gwac data generation code 
+   git clone https://github.com/wan-meng/gwac_dbgen.git
 pipeline.py
    add the absolute path of above dirctories to your python path: eg, 
       sys.path.append('/data/gwac/gwac_dbgen')
