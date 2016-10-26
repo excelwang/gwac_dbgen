@@ -39,21 +39,33 @@ def convert(catastart, bindir, catadir, prefix, suffix, n=None):
         g=gen_filenames(catastart,catadir,prefix,suffix)
         for x in range(n):
             catname=g.next()
-            outputname = "%s-{1..22}" %catname
+            outputname = "%s-*" %catname
             content = '''/usr/bin/time -f %e '''
             #csv2bincmd = os.path.join(sys.path[0], 'csv2bin ')
             csv2bincmd = os.path.join(os.getcwd(), 'csv2bin ')
-            cmd = content + csv2bincmd + catname + "; mv %s  %s"  %(outputname, bindir)
-            #print  cmd
-            os.system(cmd)
+            #cmd = content + csv2bincmd + catname + "; mv %s  %s"  %(outputname, bindir)
+            #cmd1 = content + csv2bincmd + catname
+            #print  cmd1
+            #os.system(cmd1)
+            cmd2 = "cp %s  %s"  %(outputname, bindir)
+            #cmd2 = "cp /home/wamdm/wm/gwac/combinedcsv-200in1-270M/RA240_DEC10_sqd225-ccd17-0001.cat-{1..22}  /home/wamdm/wm/gwac/binarycatalogs-200in1"
+            print cmd2
+            os.system(cmd2)
     else: #multiprocessing version, convert one file at a time.
         catname = "%s%s%04d%s" %(catadir, prefix, catastart, suffix)
-        outputname = "%s-{1..22}" %catname
+        outputname = "%s-*" %catname
         content = '''/usr/bin/time -f %e '''
         #csv2bincmd = os.path.join(sys.path[0], 'csv2bin ')
         csv2bincmd = os.path.join(os.getcwd(), 'csv2bin ')
         cmd = content + csv2bincmd + catname + "; mv %s %s"  %(outputname, bindir)
-        os.system(cmd)
+        cmd1 = content + csv2bincmd + catname
+        os.system(cmd1)
+
+        cmd2 = "mv %s  %s"  %(outputname, bindir)
+        #cmd2 = "cp /home/wamdm/wm/gwac/combinedcsv-200in1-270M/RA240_DEC10_sqd225-ccd17-0001.cat-1  /home/wamdm/wm/gwac/binarycatalogs-200in1"
+        print cmd2
+        os.system(cmd2)
+
 def convert_wrap(args):
     return convert(*args)
 #one day has 86400 catalogs, create to 86400.
@@ -78,15 +90,16 @@ def multiconvert(n1cata, n2cata, bindir, catadir, prefix, suffix):
 
 #usage1: in shell
 #nohup python multicsv2bin.py > logmult-20141017-cs63M-48in1 &
-start = 1
-end = 209
-binarydir = "/data/binarycatalogs-48in1"
-if __name__ == '__main__':
-    with Timer() as t:
-        if __name__ == "__main__":
-            #launch 40 cores to convert binary catalogs from 1 to 86400.
-            multiconvert(start, end)
-    print "multicsv2bin: convert catalogs from %d to %d elapsed time: %.3f s." %(start, end, t.secs)
+#start = 1
+#end = 209
+#binarydir = "/data/binarycatalogs-48in1"
+#if __name__ == '__main__':
+#    with Timer() as t:
+#        if __name__ == "__main__":
+#            #launch 40 cores to convert binary catalogs from 1 to 86400.
+#            multiconvert(start, end)
+#    print "multicsv2bin: convert catalogs from %d to %d elapsed time: %.3f s." %(start, end, t.secs)
 #usage2: in ipython
 #  from multicsv2bin import *
 #  convert(1)
+#convert(1, "/home/wamdm/wm/gwac/binarycatalogs-200in1", "/home/wamdm/wm/gwac/combinedcsv-200in1-270M/", "RA240_DEC10_sqd225-ccd17-", ".cat", 1)
